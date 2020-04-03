@@ -26,10 +26,15 @@ inline void operator delete(void* ptr) {
 }
 
 inline void operator delete[](void* ptr) {
-    cout<<"ly global delete() \n"; myFree(ptr);
+    cout<<"ly global delete[]() \n"; myFree(ptr);
 }
 
 int main() {
     size_t t = 6;
     int* p = new int;
+    delete p;
+    int* ptr = new int[10];
+    ptr[3] = 3;
+    cout<<*(ptr + 3)<<endl; // 3
+    delete[] ptr;
 }
