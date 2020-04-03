@@ -2,11 +2,17 @@
  * @Author: Hellcat
  * @Date: 2020-04-03 13:00:33
  */
+// 最好不要重载全局 operator new 和 operator delete
+// 会和STL库的allocator起冲突
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 
 void* myAlloc(size_t size) {
-    return malloc(size);
+    if(void* mem = malloc(size))
+        return malloc(size);
+    else
+        throw bad_alloc();
 }
 
 void myFree(void* ptr) {
@@ -25,7 +31,7 @@ inline void operator delete(void* ptr) {
     cout<<"ly global delete() \n"; return myFree(ptr);
 }
 
-inline void operator delete[](void* ptr) {
+inline void operator delete[](void* ptr) noexcept {
     cout<<"ly global delete[]() \n"; myFree(ptr);
 }
 

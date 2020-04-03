@@ -14,12 +14,10 @@ public:
     ~Foo() {
         cout<< "~Foo ("<< ++dtorNum << ")"<<endl;
     }
-    // 重载成员operatpr new
     void* operator new(size_t size) noexcept {
         cout<< "Foo operator new" <<endl;
         return malloc(size);
     }
-    // 重载成员operatpr delete
     void operator delete(void* ptr, size_t size) {
         cout<< "Foo operator delete" <<endl;
         free(ptr);
