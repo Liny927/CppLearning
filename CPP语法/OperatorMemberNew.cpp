@@ -5,34 +5,61 @@
 #include <iostream>
 using namespace std;
 
-class Foo {
+class Foo { // 16
 public:
-    Foo() {
-        cout<< "Foo ("<< ++ctorNum << ")"<<endl;
-        m_data = 0;
+    Foo(): m_id(0) {
+        cout<<"Foo("<<++ctorNum<<")"<<", this = "<<this<<endl;
+    }
+    Foo(int i): m_id(i) {
+        cout<<"Foo("<<++ctorNum<<")"<<endl;
     }
     ~Foo() {
-        cout<< "~Foo ("<< ++dtorNum << ")"<<endl;
-    }
-    void* operator new(size_t size) noexcept {
-        cout<< "Foo operator new" <<endl;
-        return malloc(size);
-    }
-    void operator delete(void* ptr, size_t size) {
-        cout<< "Foo operator delete" <<endl;
-        free(ptr);
+        cout<<"~Foo("<<++dtorNum<<")"<<", this = "<<this<<endl;
     }
     static int ctorNum, dtorNum;
-    int getData() { return m_data; }
+    static void* operator new(size_t size);
+    static void operator delete(void* pdead, size_t size);
+    static void* operator new[](size_t size);
+    static void operator delete[](void* pdead, size_t size);
 private:
-    int m_data;
+    int m_id; // 4
+    long m_data; // 4
+    char* m_str; // 8
 };
+
+void* Foo::operator new(size_t size) {
+    auto p = (Foo*)malloc(size);
+    cout<<"Foo operator new"<<endl;
+    return p;
+}
+
+void Foo::operator delete(void* pdead, size_t size) {
+    cout<<"Foo operator delete"<<endl;
+    free(pdead);
+}
+
+void* Foo::operator new[](size_t size) {
+    Foo* p = (Foo*)malloc(size);
+    cout<<"Foo operator new[]"<<endl;
+    cout<<"SIZE: "<<size<<endl; // 56 = 16*3 + 8
+    return p;
+}
+
+void Foo::operator delete[](void* pdead, size_t size) {
+    cout<<"Foo operator delete[]"<<endl;
+    free(pdead);
+}
 
 int Foo::ctorNum = 0;
 int Foo::dtorNum = 0;
 
 int main() {
-    Foo *p = new Foo;
-    cout<<p->getData()<<endl;
-    delete p;
+    //auto* p1 = new Foo;
+    auto* p2 = new Foo[3];
+    cout<<"--------------------"<<endl;
+    //auto* p3 = ::new Foo; // 强制采用global new
+    //::delete p3;
+    delete[] p2;
+    //delete p1;
+    return 0;
 }
