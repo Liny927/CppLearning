@@ -212,7 +212,7 @@ namespace ly01 {
         ::sort(c.begin(), c.end());
         cout<<"sort used time: "<<(clock()-timeStart)<<endl;
     }
-    // deque stackÂÔ
+    // queue stackÂÔ
 }
 
 int main() {

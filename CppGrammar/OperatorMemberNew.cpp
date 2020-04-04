@@ -17,6 +17,7 @@ public:
         cout<<"~Foo("<<++dtorNum<<")"<<", this = "<<this<<endl;
     }
     static int ctorNum, dtorNum;
+    // operator new的第一个参数必须是size_t类型
     static void* operator new(size_t size);
     static void operator delete(void* pdead, size_t size);
     static void* operator new[](size_t size);
@@ -54,12 +55,14 @@ int Foo::ctorNum = 0;
 int Foo::dtorNum = 0;
 
 int main() {
-    //auto* p1 = new Foo;
-    auto* p2 = new Foo[3];
+    //auto p1 = new Foo;
+    auto p2 = new Foo[3];
     cout<<"--------------------"<<endl;
-    //auto* p3 = ::new Foo; // 强制采用global new
+    auto p3 = new Foo(1);
+    //auto p3 = ::new Foo; // 强制采用global new
     //::delete p3;
     delete[] p2;
+    delete p3;
     //delete p1;
     return 0;
 }
