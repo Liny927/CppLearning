@@ -4,7 +4,7 @@
  */
 // set和multiset通常以红黑树实现
 #include <iostream>
-#include <unordered_set>
+#include <set>
 #include <ctime>
 #include <algorithm>
 using namespace std;
@@ -38,10 +38,10 @@ int compareStrings(const void* a, const void* b) {
         return 0;
 }
 
-void test_unordered_multiset(long& value) {
-	cout << "\ntest_unordered_multiset().......... \n";
+void test_multiset(long& value) {
+	cout << "\ntest_multiset().......... \n";
 
-    unordered_multiset<string> c;
+    multiset<string> c;
     char buf[10];
 
     clock_t timeStart = clock();
@@ -56,15 +56,8 @@ void test_unordered_multiset(long& value) {
 		}
 	}
 	cout << "milli-seconds : " << (clock()-timeStart) << endl;
-	cout << "unordered_multiset.size()= " << c.size() << endl;
-	cout << "unordered_multiset.max_size()= " << c.max_size() << endl;	// 384307168202282325
-	// cout << "unordered_multiset.bucket_count()= " << c.bucket_count() << endl;
-	// cout << "unordered_multiset.load_factor()= " << c.load_factor() << endl;
-	// cout << "unordered_multiset.max_load_factor()= " << c.max_load_factor() << endl;
-	// cout << "unordered_multiset.max_bucket_count()= " << c.max_bucket_count() << endl;
-  	// for (unsigned i = 0; i < 20; i++) {
-    // 	cout << "bucket #" << i << " has " << c.bucket_size(i) << " elements.\n";
-  	// }
+	cout << "multiset.size()= " << c.size() << endl;
+	cout << "multiset.max_size()= " << c.max_size() << endl;	// 384307168202282325
     string target = get_a_target_string();
     timeStart = clock();
     auto pItem1 = ::find(c.begin(), c.end(), target);
@@ -85,5 +78,5 @@ void test_unordered_multiset(long& value) {
 
 int main() {
     long v = 1e6;
-    test_unordered_multiset(v);
+    test_multiset(v);
 }
